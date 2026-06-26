@@ -53,6 +53,23 @@ function weapon(p, melee) {
   return { name: p.attrs.name, range: c.Range || (melee ? 'Melee' : ''), A: c.A || '', skill: c.BS || c.WS || '', S: c.S || '', AP: c.AP || '', D: c.D || '', keywords: kw };
 }
 
+// Assign one primary 10e unit-type category (first match wins).
+function primaryCategory(cats) {
+  const has = (k) => cats.some((c) => c.toLowerCase() === k.toLowerCase());
+  if (has('Character') || has('Epic Hero')) return 'Characters';
+  if (has('Dedicated Transport')) return 'Dedicated Transports';
+  if (has('Fortification')) return 'Fortifications';
+  if (has('Drone')) return 'Drones';
+  if (has('Aircraft')) return 'Aircraft';
+  if (has('Battlesuit')) return 'Battlesuits';
+  if (has('Battleline')) return 'Battleline';
+  if (has('Mounted') || has('Beast')) return 'Mounted';
+  if (has('Monster')) return 'Monsters';
+  if (has('Vehicle') || has('Walker')) return 'Vehicles';
+  if (has('Infantry')) return 'Infantry';
+  return 'Other';
+}
+
 function pointsOf(entry) {
   // smallest model/unit cost listed
   const costs = find(entry, (n) => n.tag === 'cost' && /pts/i.test(n.attrs.name || '')).map((c) => parseInt(c.attrs.value, 10)).filter((v) => v > 0);
@@ -102,9 +119,11 @@ for (const e of datasheetEntries) {
   const cats = find(e, (n) => n.tag === 'categoryLink').map((c) => c.attrs.name).filter(Boolean);
   const factionKeywords = cats.filter((c) => /^Faction:/i.test(c)).map((c) => c.replace(/^Faction:\s*/i, ''));
   const keywords = cats.filter((c) => !/^Faction:/i.test(c) && !/^(Configuration|Battleline|Dedicated Transport|Infantry Models|Non-Kroot)$/i.test(c) && c !== 'Unit');
+  const category = primaryCategory(cats);
   datasheets.push({
     name: name.replace(/\s*\[(Legends|Crucible)\]\s*/i, '').trim(),
     legends: /\[Legends\]/i.test(name), crucible: /\[Crucible\]/i.test(name),
+    category,
     profiles, invuln,
     rangedWeapons: ranged, meleeWeapons: melee,
     abilities: { core, faction: [...new Set(faction)], other, wargear: [] },

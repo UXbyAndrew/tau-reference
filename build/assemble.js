@@ -16,6 +16,7 @@ const cleanSheets = datasheets.map(d => ({
   name: d.name,
   legends: !!d.legends,
   crucible: !!d.crucible,
+  category: d.category || 'Other',
   points: d.points || null,
   profiles: d.profiles || [],
   invuln: d.invuln || '',

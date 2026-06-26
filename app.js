@@ -72,11 +72,15 @@ function row(go, title, sub, meta, badge) {
 
 // ---- list views ----
 function listDatasheets() {
-  const std = DATA.datasheets.filter((d) => !d.legends);
-  const leg = DATA.datasheets.filter((d) => d.legends);
+  const order = ['Characters', 'Battleline', 'Battlesuits', 'Infantry', 'Mounted', 'Vehicles',
+    'Aircraft', 'Monsters', 'Fortifications', 'Dedicated Transports', 'Drones', 'Other'];
+  const by = groupBy(DATA.datasheets, (d) => d.category || 'Other');
+  const keys = order.filter((k) => by[k]).concat(Object.keys(by).filter((k) => !order.includes(k)));
   let h = '';
-  if (std.length) h += `<div class="group-title">Datasheets (${std.length})</div>` + std.map(dsRowHtml).join('');
-  if (leg.length) h += `<div class="group-title">Warhammer Legends (${leg.length})</div>` + leg.map(dsRowHtml).join('');
+  for (const k of keys) {
+    const units = by[k].sort((a, b) => (a.legends - b.legends) || a.name.localeCompare(b.name));
+    h += `<div class="group-title">${esc(k)} (${units.length})</div>` + units.map(dsRowHtml).join('');
+  }
   return h;
 }
 function dsRowHtml(d) {
