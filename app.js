@@ -74,12 +74,21 @@ function row(go, title, sub, meta, badge) {
 function listDatasheets() {
   const order = ['Characters', 'Battleline', 'Battlesuits', 'Infantry', 'Mounted', 'Vehicles',
     'Aircraft', 'Monsters', 'Fortifications', 'Dedicated Transports', 'Drones', 'Other'];
-  const by = groupBy(DATA.datasheets, (d) => d.category || 'Other');
-  const keys = order.filter((k) => by[k]).concat(Object.keys(by).filter((k) => !order.includes(k)));
+  const catRank = (d) => { const i = order.indexOf(d.category || 'Other'); return i < 0 ? order.length : i; };
+  const current = DATA.datasheets.filter((d) => !d.legends);
+  const legends = DATA.datasheets.filter((d) => d.legends);
   let h = '';
+  // current units grouped by type
+  const by = groupBy(current, (d) => d.category || 'Other');
+  const keys = order.filter((k) => by[k]).concat(Object.keys(by).filter((k) => !order.includes(k)));
   for (const k of keys) {
-    const units = by[k].sort((a, b) => (a.legends - b.legends) || a.name.localeCompare(b.name));
+    const units = by[k].sort((a, b) => a.name.localeCompare(b.name));
     h += `<div class="group-title">${esc(k)} (${units.length})</div>` + units.map(dsRowHtml).join('');
+  }
+  // Legends in their own section (clustered by type, then name)
+  if (legends.length) {
+    legends.sort((a, b) => catRank(a) - catRank(b) || a.name.localeCompare(b.name));
+    h += `<div class="group-title">Warhammer Legends (${legends.length})</div>` + legends.map(dsRowHtml).join('');
   }
   return h;
 }
