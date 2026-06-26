@@ -76,8 +76,12 @@ function listDatasheets() {
   const leg = DATA.datasheets.filter((d) => d.legends);
   const mk = (d) => {
     const p = d.profiles[0] || {};
-    const sub = ['M ' + (p.M || '–'), 'T ' + (p.T || '–'), 'Sv ' + (p.SV || '–'), 'W ' + (p.W || '–')].join(' · ');
-    return row({ type: 'ds', id: d.name }, esc(d.name), sub, '', d.legends ? ' <span class="badge legend">Legends</span>' : '');
+    const strip = ['M', 'T', 'SV', 'W', 'LD', 'OC'].map((k) =>
+      `<span class="ss"><i>${k}</i>${esc(p[k] || '–')}</span>`).join('');
+    const badge = d.legends ? ' <span class="badge legend">Legends</span>' : '';
+    return `<button class="row dsrow" data-go='${esc(JSON.stringify({ type: 'ds', id: d.name }))}'>
+      <span class="title">${esc(d.name)}${badge}</span>
+      <span class="statstrip">${strip}</span></button>`;
   };
   let h = '';
   if (news.length) h += `<div class="group-title">New & updated datasheets</div>` + news.map(mk).join('');

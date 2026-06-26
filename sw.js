@@ -1,5 +1,5 @@
 // Service worker: precache the app shell + data so it works fully offline.
-const CACHE = 'tau-pack-v1';
+const CACHE = 'tau-pack-v2';
 const ASSETS = [
   './', './index.html', './styles.css', './app.js', './data.json',
   './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png',
