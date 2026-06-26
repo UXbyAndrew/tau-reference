@@ -3,3 +3,7 @@ build/bbox.html
 build/raw.txt
 build/*.json
 build/data.pretty.json
+build/tau.cat
+build/bsdata.json
+data.pretty.json
+build/codex_raw.txt

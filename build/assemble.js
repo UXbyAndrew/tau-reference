@@ -1,6 +1,6 @@
 // Combine all parsed pieces into ../data.json consumed by the app.
 const fs = require('fs');
-const datasheets = require('./datasheets.json');
+const datasheets = require('./bsdata.json'); // full roster (BSData), incl. faction-pack stat updates
 const detachments = require('./detachments_parsed.json');
 const stratagems = require('./stratagems.json');
 const { updates, faqs } = require('./updates.json');
@@ -15,6 +15,8 @@ for (const d of detachments) {
 const cleanSheets = datasheets.map(d => ({
   name: d.name,
   legends: !!d.legends,
+  crucible: !!d.crucible,
+  points: d.points || null,
   profiles: d.profiles || [],
   invuln: d.invuln || '',
   rangedWeapons: (d.rangedWeapons || []).map(stripWpn),
@@ -38,10 +40,10 @@ function stripWpn(w) {
 
 const data = {
   meta: {
-    source: 'T’au Empire Faction Pack',
-    version: 'Version 1.0',
-    legal: 'Legal for matched play from 20th June 2026',
-    note: 'Unofficial personal reference compiled from the official Faction Pack PDF. Not a substitute for the official rules.',
+    source: 'T’au Empire',
+    version: 'Full roster + Faction Pack (Jun 2026)',
+    legal: 'Datasheets via community BSData (10e); detachments/stratagems/errata from the official Faction Pack.',
+    note: 'Unofficial personal reference. Datasheets compiled from open community data and may differ slightly from the official book. Not a substitute for the official rules.',
   },
   detachments: detachments.map(d => ({ name: d.name, uniqueTag: d.uniqueTag, tagline: d.tagline, rules: d.rules })),
   datasheets: cleanSheets,

@@ -67,6 +67,9 @@ main { padding: 10px 12px 24px; max-width: 760px; margin: 0 auto; }
 .row .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
 .row .meta { color: var(--accent); font-size: 13px; font-weight: 700; white-space: nowrap; }
 .dsrow { flex-direction: column; align-items: stretch; gap: 8px; }
+.dsrow-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.pts { color: var(--accent); font-size: 13px; font-weight: 700; white-space: nowrap; }
+h1 .pts { font-size: 15px; }
 .statstrip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
 .statstrip .ss { background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; text-align: center; padding: 4px 1px; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .statstrip .ss i { display: block; color: var(--muted); font-size: 10px; font-weight: 700; font-style: normal; letter-spacing: .03em; }

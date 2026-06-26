@@ -72,21 +72,23 @@ function row(go, title, sub, meta, badge) {
 
 // ---- list views ----
 function listDatasheets() {
-  const news = DATA.datasheets.filter((d) => !d.legends);
+  const std = DATA.datasheets.filter((d) => !d.legends);
   const leg = DATA.datasheets.filter((d) => d.legends);
-  const mk = (d) => {
-    const p = d.profiles[0] || {};
-    const strip = ['M', 'T', 'SV', 'W', 'LD', 'OC'].map((k) =>
-      `<span class="ss"><i>${k}</i>${esc(p[k] || '–')}</span>`).join('');
-    const badge = d.legends ? ' <span class="badge legend">Legends</span>' : '';
-    return `<button class="row dsrow" data-go='${esc(JSON.stringify({ type: 'ds', id: d.name }))}'>
-      <span class="title">${esc(d.name)}${badge}</span>
-      <span class="statstrip">${strip}</span></button>`;
-  };
   let h = '';
-  if (news.length) h += `<div class="group-title">New & updated datasheets</div>` + news.map(mk).join('');
-  if (leg.length) h += `<div class="group-title">Warhammer Legends</div>` + leg.map(mk).join('');
+  if (std.length) h += `<div class="group-title">Datasheets (${std.length})</div>` + std.map(dsRowHtml).join('');
+  if (leg.length) h += `<div class="group-title">Warhammer Legends (${leg.length})</div>` + leg.map(dsRowHtml).join('');
   return h;
+}
+function dsRowHtml(d) {
+  const p = d.profiles[0] || {};
+  const strip = ['M', 'T', 'SV', 'W', 'LD', 'OC'].map((k) =>
+    `<span class="ss"><i>${k}</i>${esc(p[k] || '–')}</span>`).join('');
+  const badge = (d.legends ? ' <span class="badge legend">Legends</span>' : '') +
+    (d.crucible ? ' <span class="badge legend">Crucible</span>' : '');
+  const pts = d.points ? `<span class="pts">${d.points} pts</span>` : '';
+  return `<button class="row dsrow" data-go='${esc(JSON.stringify({ type: 'ds', id: d.name }))}'>
+    <span class="dsrow-top"><span class="title">${esc(d.name)}${badge}</span>${pts}</span>
+    <span class="statstrip">${strip}</span></button>`;
 }
 function listStratagems() {
   const by = groupBy(DATA.stratagems, (s) => s.detachment);
@@ -127,7 +129,9 @@ function renderDetail(d) {
 
 function dsDetail(d) {
   if (!d) return '<p class="empty">Not found.</p>';
-  let h = `<div class="detail"><h1>${esc(d.name)}${d.legends ? ' <span class="badge legend">Legends</span>' : ''}</h1>`;
+  const badge = (d.legends ? ' <span class="badge legend">Legends</span>' : '') + (d.crucible ? ' <span class="badge legend">Crucible</span>' : '');
+  const pts = d.points ? ` <span class="pts">${d.points} pts</span>` : '';
+  let h = `<div class="detail"><h1>${esc(d.name)}${badge}${pts}</h1>`;
   // profiles
   for (const p of d.profiles) {
     if (p.label) h += `<div class="prof-label">${esc(p.label)}</div>`;
