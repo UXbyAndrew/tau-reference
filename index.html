@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e1416" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="T’au Pack" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <title>T’au Empire Faction Pack</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header id="top">
+    <div class="bar">
+      <button id="backBtn" class="back" hidden aria-label="Back">‹</button>
+      <input id="search" type="search" inputmode="search" autocomplete="off"
+             placeholder="Search units, weapons, rules…" aria-label="Search" />
+      <button id="clearBtn" class="clear" hidden aria-label="Clear search">×</button>
+    </div>
+    <nav id="tabs" class="tabs">
+      <button data-tab="datasheets" class="active">Units</button>
+      <button data-tab="stratagems">Stratagems</button>
+      <button data-tab="enhancements">Enhancements</button>
+      <button data-tab="detachments">Detachments</button>
+      <button data-tab="rules">Rules &amp; FAQ</button>
+    </nav>
+  </header>
+
+  <main id="view" aria-live="polite"></main>
+
+  <footer id="foot"></footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

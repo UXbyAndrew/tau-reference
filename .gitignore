@@ -1,0 +1,5 @@
+.DS_Store
+build/bbox.html
+build/raw.txt
+build/*.json
+build/data.pretty.json
